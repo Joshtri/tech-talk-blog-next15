@@ -137,35 +137,27 @@ export default function ReadPost() {
       {post && (
         <Head>
           <title>{createPageTitle(post.title)}</title>
+          <meta name="description" content={post.summary || "Default description"} />
+          <meta property="og:title" content={createPageTitle(post.title)} />
+          <meta property="og:description" content={post.summary || "Default description"} />
           <meta
-            name="description"
-            content={post.summary || "Default description"}
+            property="og:image"
+            content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
           />
-          <meta
-            property="og:title"
-            content={createPageTitle(post.title)}
-          />
-          <meta
-            property="og:description"
-            content={post.summary || "Default description"}
-          />
-          <meta property="og:image" content={post.coverImageUrl} />
           <meta
             property="og:url"
             content={`https://tech-talks-blog.com/post/${post.slug}`}
           />
           <meta property="og:type" content="article" />
           <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={createPageTitle(post.title)} />
+          <meta name="twitter:description" content={post.summary || "Default description"} />
           <meta
-            name="twitter:title"
-            content={createPageTitle(post.title)}
+            name="twitter:image"
+            content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
           />
-          <meta
-            name="twitter:description"
-            content={post.summary || "Default description"}
-          />
-          <meta name="twitter:image" content={post.coverImageUrl} />
         </Head>
+
       )}
 
       {loading ? (
