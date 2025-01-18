@@ -1,20 +1,34 @@
-import React, { useState } from 'react';
-import { FaWhatsapp, FaX } from 'react-icons/fa6';
-import { FiShare2, FiFacebook, FiTwitter } from 'react-icons/fi';
+import React, { useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
+import { FiShare2, FiFacebook, FiTwitter } from "react-icons/fi";
 
-const ShareButton = () => {
+const ShareButton = ({ post }) => {
   const [showOptions, setShowOptions] = useState(false);
+
+  if (!post) return null;
+
+  const currentUrl = `https://tech-talks-blog.com/post/${post.slug}`;
 
   const toggleShareOptions = () => setShowOptions(!showOptions);
 
   const handleShare = (platform) => {
-    const url = window.location.href;
+    const title = post.title;
+    const description = post.summary || "Check out this amazing post!";
+    const image = post.coverImageUrl;
+
     const shareUrls = {
-      whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      twitter: `https://twitter.com/share?url=${encodeURIComponent(url)}`,
+      whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(
+        `${title}\n\n${description}\n${currentUrl}`
+      )}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        currentUrl
+      )}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        `${title}\n${currentUrl}`
+      )}&url=${encodeURIComponent(currentUrl)}`,
     };
-    if (shareUrls[platform]) window.open(shareUrls[platform], '_blank');
+
+    if (shareUrls[platform]) window.open(shareUrls[platform], "_blank");
   };
 
   return (
@@ -29,15 +43,24 @@ const ShareButton = () => {
       {showOptions && (
         <div className="absolute z-10 bg-white shadow-md rounded-md mt-2 w-40">
           <ul>
-            <li onClick={() => handleShare('whatsapp')} className="p-2 hover:bg-gray-100 cursor-pointer">
+            <li
+              onClick={() => handleShare("whatsapp")}
+              className="p-2 hover:bg-gray-100 cursor-pointer"
+            >
               <FaWhatsapp className="inline-block mr-2 text-green-500" />
               WhatsApp
             </li>
-            <li onClick={() => handleShare('facebook')} className="p-2 hover:bg-gray-100 cursor-pointer">
+            <li
+              onClick={() => handleShare("facebook")}
+              className="p-2 hover:bg-gray-100 cursor-pointer"
+            >
               <FiFacebook className="inline-block mr-2 text-blue-600" />
               Facebook
             </li>
-            <li onClick={() => handleShare('twitter')} className="p-2 hover:bg-gray-100 cursor-pointer">
+            <li
+              onClick={() => handleShare("twitter")}
+              className="p-2 hover:bg-gray-100 cursor-pointer"
+            >
               <FiTwitter className="inline-block mr-2 text-blue-400" />
               Twitter
             </li>

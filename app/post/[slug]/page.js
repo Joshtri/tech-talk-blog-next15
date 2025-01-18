@@ -228,7 +228,7 @@ export default function ReadPost() {
               <ToastContainer />
             </div>
           </div>
-          <ShareButton />
+          <ShareButton post={post} />
         </div>
       ) : (
         <div className="text-center text-red-500">{error}</div>
