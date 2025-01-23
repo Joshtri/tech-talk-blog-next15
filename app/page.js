@@ -15,7 +15,7 @@ export async function generateMetadata() {
         url: "https://tech-talks-blog.com",
         images: [
           {
-            url: "https://tech-talks-blog.com/assets/tech_talks_blog_cover.png",
+            url: "https://tech-talks-blog.com/assets/tech_talk_logo.png",
             alt: "Tech Talks Blog Cover",
           },
         ],
@@ -25,7 +25,7 @@ export async function generateMetadata() {
         card: "summary_large_image",
         title: "Tech Talks Blog - Temukan Wawasan dan Inspirasi Dunia Teknologi",
         description: "Selamat datang di Tech Talks Blog! Baca artikel terbaru dan wawasan mendalam tentang teknologi dan dunia IT.",
-        images: ["https://tech-talks-blog.com/assets/tech_talks_blog_cover.png"],
+        images: ["https://tech-talks-blog.com/assets/tech_talk_logo.png"],
       },
     };
   } catch (error) {
