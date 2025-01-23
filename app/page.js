@@ -8,6 +8,7 @@ import EmptyArticleMessage from "@/components/EmptyArticleMessage";
 import PostsCard from "@/components/Post/PostsCard";
 import SocialBar from "@/components/SocialBar";
 import SkeletonPostsCard from "@/components/Post/SkeletonPostsCard.jsx"; // Komponen Skeleton
+import Head from "next/head";
 
 export default function MainPage() {
   const [posts, setPosts] = useState([]);
@@ -59,7 +60,7 @@ export default function MainPage() {
   return (
 
     <>
-          <Head>
+      <Head>
         {/* Title */}
         <title>Tech Talks Blog - Temukan Wawasan dan Inspirasi Dunia Teknologi</title>
 
