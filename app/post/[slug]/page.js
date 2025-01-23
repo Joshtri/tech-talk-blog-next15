@@ -136,27 +136,37 @@ export default function ReadPost() {
     <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 py-8">
       {post && (
         <Head>
-          <title>{createPageTitle(post.title)}</title>
-          <meta name="description" content={post.summary || "Default description"} />
-          <meta property="og:title" content={createPageTitle(post.title)} />
-          <meta property="og:description" content={post.summary || "Default description"} />
-          <meta
-            property="og:image"
-            content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
-          />
-          <meta
-            property="og:url"
-            content={`https://tech-talks-blog.com/post/${post.slug}`}
-          />
-          <meta property="og:type" content="article" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={createPageTitle(post.title)} />
-          <meta name="twitter:description" content={post.summary || "Default description"} />
-          <meta
-            name="twitter:image"
-            content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
-          />
-        </Head>
+        <title>{`Tech Talks Blog - ${post.title}`}</title>
+        <meta
+          name="description"
+          content={`Baca postingan "${post.title}" di Tech Talks Blog. ${post.summary || "Dapatkan wawasan terbaru tentang teknologi dan IT!"}`}
+        />
+        <meta property="og:title" content={`Tech Talks Blog - ${post.title}`} />
+        <meta
+          property="og:description"
+          content={post.summary || "Baca artikel terbaru tentang teknologi dan IT di Tech Talks Blog."}
+        />
+        <meta
+          property="og:image"
+          content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
+        />
+        <meta
+          property="og:url"
+          content={`https://tech-talks-blog.com/post/${post.slug}`}
+        />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Tech Talks Blog - ${post.title}`} />
+        <meta
+          name="twitter:description"
+          content={post.summary || "Baca artikel terbaru tentang teknologi dan IT di Tech Talks Blog."}
+        />
+        <meta
+          name="twitter:image"
+          content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
+        />
+      </Head>
+
 
       )}
 
