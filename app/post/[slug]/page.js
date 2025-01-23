@@ -22,6 +22,18 @@ const createPageTitle = (postTitle) => {
   return postTitle ? `${siteName} | ${postTitle}` : siteName;
 };
 
+export async function getServerSideProps(context) {
+  const { slug } = context.params;
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`);
+  const post = await response.json();
+
+  return {
+    props: {
+      post: post.data,
+    },
+  };
+}
+
 export default function ReadPost() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,18 +71,14 @@ export default function ReadPost() {
   
 
   useEffect(() => {
-    if (post && post._id) {
-      fetchLikeStatus();
-      fetchComments();
-    }
-
     console.log("Post data:", post);
     if (post) {
-      console.log("Title:", `Tech Talks Blog - ${post.title}`);
+      console.log("Title:", post.title);
       console.log("Description:", post.description);
+      console.log("Image URL:", post.coverImageUrl);
     }
-
   }, [post]);
+  
 
   const fetchLikeStatus = async () => {
     try {
@@ -148,7 +156,7 @@ export default function ReadPost() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 py-8">
       {post && (
-        <Head>
+<Head>
   <title>{`Tech Talks Blog - ${post?.title || "Artikel Teknologi"}`}</title>
   <meta
     name="description"
@@ -157,7 +165,7 @@ export default function ReadPost() {
   <meta property="og:title" content={`Tech Talks Blog - ${post?.title || "Artikel Teknologi"}`} />
   <meta
     property="og:description"
-    content={post?.description || "Dapatkan wawasan terbaru tentang teknologi dan IT di Tech Talks Blog."}
+    content={post?.description || "Baca artikel terbaru tentang teknologi dan IT di Tech Talks Blog."}
   />
   <meta
     property="og:image"
@@ -182,6 +190,7 @@ export default function ReadPost() {
     content={post?.coverImageUrl || "https://tech-talks-blog.com/assets/tech_talk_logo.png"}
   />
 </Head>
+
 
 
 
