@@ -57,6 +57,54 @@ export default function MainPage() {
   };
 
   return (
+
+    <>
+          <Head>
+        {/* Title */}
+        <title>Tech Talks Blog - Temukan Wawasan dan Inspirasi Dunia Teknologi</title>
+
+        {/* Meta Description */}
+        <meta
+          name="description"
+          content="Selamat datang di Tech Talks Blog! Jelajahi artikel dan wawasan terbaru tentang teknologi, IT, pengembangan perangkat lunak, dan masih banyak lagi."
+        />
+
+        {/* Meta Keywords */}
+        <meta
+          name="keywords"
+          content="Tech Talks Blog, Blog Teknologi, Artikel IT, Wawasan Teknologi, Pengembangan Perangkat Lunak, Coding, Programming, Teknologi Terkini"
+        />
+
+        {/* Author */}
+        <meta name="author" content="Tim Tech Talks Blog" />
+
+        {/* Robots */}
+        <meta name="robots" content="index, follow" />
+
+        {/* Open Graph Metadata */}
+        <meta property="og:title" content="Tech Talks Blog - Temukan Wawasan dan Inspirasi Dunia Teknologi" />
+        <meta
+          property="og:description"
+          content="Jelajahi artikel dan wawasan terbaru tentang teknologi, IT, pengembangan perangkat lunak, dan masih banyak lagi di Tech Talks Blog."
+        />
+        <meta property="og:image" content="https://tech-talks-blog.com/assets/tech_talks_blog_cover.png" />
+        <meta property="og:url" content="https://tech-talks-blog.com" />
+        <meta property="og:site_name" content="Tech Talks Blog" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Metadata */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Tech Talks Blog - Temukan Wawasan dan Inspirasi Dunia Teknologi" />
+        <meta
+          name="twitter:description"
+          content="Selamat datang di Tech Talks Blog! Baca artikel terbaru dan wawasan mendalam tentang teknologi dan dunia IT."
+        />
+        <meta name="twitter:image" content="https://tech-talks-blog.com/assets/tech_talks_blog_cover.png" />
+
+        {/* Viewport */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+    
     <main className="container mx-auto px-4 py-8">
       <SocialBar />
       <Welcome />
@@ -87,5 +135,6 @@ export default function MainPage() {
         )}
       </div>
     </main>
+    </>
   );
 }
