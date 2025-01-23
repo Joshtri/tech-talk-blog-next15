@@ -44,19 +44,32 @@ export default function ReadPost() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`
       );
       setPost(response.data.data);
-      setLoading(false);
     } catch (err) {
       console.error("Error fetching the post:", err);
-      setError("Error fetching the post");
+      setPost({
+        title: "Artikel Tidak Ditemukan",
+        summary: "Artikel yang Anda cari tidak tersedia.",
+        coverImageUrl: "https://your-default-image-url.com/404.jpg",
+        slug: "not-found",
+      });
+    } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     if (post && post._id) {
       fetchLikeStatus();
       fetchComments();
     }
+
+    console.log("Post data:", post);
+    if (post) {
+      console.log("Title:", `Tech Talks Blog - ${post.title}`);
+      console.log("Description:", post.description);
+    }
+
   }, [post]);
 
   const fetchLikeStatus = async () => {
@@ -136,36 +149,40 @@ export default function ReadPost() {
     <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 py-8">
       {post && (
         <Head>
-        <title>{`Tech Talks Blog - ${post.title}`}</title>
-        <meta
-          name="description"
-          content={`Baca postingan "${post.title}" di Tech Talks Blog. ${post.summary || "Dapatkan wawasan terbaru tentang teknologi dan IT!"}`}
-        />
-        <meta property="og:title" content={`Tech Talks Blog - ${post.title}`} />
-        <meta
-          property="og:description"
-          content={post.summary || "Baca artikel terbaru tentang teknologi dan IT di Tech Talks Blog."}
-        />
-        <meta
-          property="og:image"
-          content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
-        />
-        <meta
-          property="og:url"
-          content={`https://tech-talks-blog.com/post/${post.slug}`}
-        />
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Tech Talks Blog - ${post.title}`} />
-        <meta
-          name="twitter:description"
-          content={post.summary || "Baca artikel terbaru tentang teknologi dan IT di Tech Talks Blog."}
-        />
-        <meta
-          name="twitter:image"
-          content={post.coverImageUrl || "https://your-default-image-url.com/default.jpg"}
-        />
-      </Head>
+  <title>{`Tech Talks Blog - ${post?.title || "Artikel Teknologi"}`}</title>
+  <meta
+    name="description"
+    content={post?.description || "Dapatkan wawasan terbaru tentang teknologi dan IT di Tech Talks Blog."}
+  />
+  <meta property="og:title" content={`Tech Talks Blog - ${post?.title || "Artikel Teknologi"}`} />
+  <meta
+    property="og:description"
+    content={post?.description || "Dapatkan wawasan terbaru tentang teknologi dan IT di Tech Talks Blog."}
+  />
+  <meta
+    property="og:image"
+    content={post?.coverImageUrl || "https://tech-talks-blog.com/assets/tech_talk_logo.png"}
+  />
+  <meta
+    property="og:url"
+    content={`https://tech-talks-blog.com/post/${post?.slug}`}
+  />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content={`Tech Talks Blog - ${post?.title || "Artikel Teknologi"}`}
+  />
+  <meta
+    name="twitter:description"
+    content={post?.description || "Dapatkan wawasan terbaru tentang teknologi dan IT di Tech Talks Blog."}
+  />
+  <meta
+    name="twitter:image"
+    content={post?.coverImageUrl || "https://tech-talks-blog.com/assets/tech_talk_logo.png"}
+  />
+</Head>
+
 
 
       )}
