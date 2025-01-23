@@ -30,33 +30,46 @@ export default function GamesPage() {
   return (
     <>
       <Head>
-        <title>Games Tech Talks Blog - Explore Fun and Exciting Games</title>
+        <title>Games di Tech Talks Blog - Permainan Seru dan Menarik untuk Semua Usia</title>
         <meta
           name="description"
-          content="Explore a variety of fun and exciting games, including Mbul Adventure and Trash Taker Turtle. Play now or download for a great gaming experience!"
+          content="Temukan berbagai permainan di Tech Talks Blog, termasuk Mbul Adventure dan Trash Taker Turtle. Permainan seru untuk semua usia, tersedia untuk dimainkan secara online atau diunduh!"
         />
         <meta
           name="keywords"
-          content="Games, Adventure Games, Fun Games, Mbul Adventure, Trash Taker Turtle, Gaming, Download Games"
+          content="Tech Talks Blog, Permainan, Mbul Adventure, Trash Taker Turtle, Permainan Seru, Permainan Petualangan, Blog Gaming"
         />
-
-        <meta name="author" content="Tech Talks Blog" />
+        <meta name="author" content="Tim Tech Talks Blog" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta property="og:title" content="Games Tech Talks Blog - Explore Fun and Exciting Games" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph Metadata */}
+        <meta property="og:title" content="Games di Tech Talks Blog - Permainan Seru dan Menarik untuk Semua Usia" />
         <meta
           property="og:description"
-          content="Check out Mbul Adventure and Trash Taker Turtle, two fun and exciting games for all ages. Play online or download now!"
+          content="Mainkan permainan seru dan menarik di Tech Talks Blog, termasuk Mbul Adventure dan Trash Taker Turtle. Coba sekarang!"
         />
-        {/* <meta
+        <meta
           property="og:image"
-          content="https://img.itch.zone/aW1nLzg4NDU2NDUuanBn/315x250%23c/ft3M1p.jpg"
-        /> */}
-
-        <meta property="og:image" content="https://tech-talks-blog.com/assets/tech_talk_logo.png" />
-
+          content="https://tech-talks-blog.com/assets/tech_talk_logo.png"
+        />
         <meta property="og:url" content="https://tech-talks-blog.com/games" />
+        <meta property="og:site_name" content="Tech Talks Blog" />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Metadata */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Games di Tech Talks Blog - Permainan Seru dan Menarik" />
+        <meta
+          name="twitter:description"
+          content="Jelajahi permainan seperti Mbul Adventure dan Trash Taker Turtle di Tech Talks Blog. Seru untuk semua orang!"
+        />
+        <meta
+          name="twitter:image"
+          content="https://tech-talks-blog.com/assets/tech_talk_logo.png"
+        />
       </Head>
+
       <div className="p-4 max-w-4xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold dark:text-gray-300 mb-6 text-center">
           Explore Our Games
