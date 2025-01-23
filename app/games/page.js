@@ -30,7 +30,7 @@ export default function GamesPage() {
   return (
     <>
       <Head>
-        <title>Games di Tech Talks Blog - Permainan Seru dan Menarik untuk Semua Usia</title>
+        <title>Games Tech Talks Blog - Permainan Seru dan Menarik untuk Semua Usia</title>
         <meta
           name="description"
           content="Temukan berbagai permainan di Tech Talks Blog, termasuk Mbul Adventure dan Trash Taker Turtle. Permainan seru untuk semua usia, tersedia untuk dimainkan secara online atau diunduh!"
