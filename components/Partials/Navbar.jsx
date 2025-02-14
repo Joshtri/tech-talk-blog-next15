@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { FaSun, FaMoon } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,8 +17,17 @@ function NavbarComp() {
       : "light"
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const controls = useAnimation();
 
-  // Sync theme dengan localStorage
+  // Start the continuous spin animation on mount.
+  useEffect(() => {
+    controls.start({
+      rotate: 360,
+      transition: { repeat: Infinity, ease: "linear", duration: 10 },
+    });
+  }, [controls]);
+
+  // Sync theme with localStorage
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -38,9 +47,18 @@ function NavbarComp() {
     <nav className="bg-white dark:bg-gray-800 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo dan Brand */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+          {/* Logo and Brand */}
+          <Link href="/" className="flex items-center">
+            <motion.div
+              animate={controls}
+              onHoverStart={() => controls.stop()}
+              onHoverEnd={() =>
+                controls.start({
+                  rotate: 360,
+                  transition: { repeat: Infinity, ease: "linear", duration: 10 },
+                })
+              }
+            >
               <Image
                 src={techTalkLogo}
                 alt="Tech Talk Logo"
@@ -48,11 +66,11 @@ function NavbarComp() {
                 height={40}
                 className="mr-3"
               />
-              <span className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                Tech Talks Blog
-              </span>
-            </Link>
-          </div>
+            </motion.div>
+            <span className="text-xl font-bold text-gray-800 dark:text-gray-200">
+              Tech Talks Blog
+            </span>
+          </Link>
 
           {/* Links */}
           <div className="hidden md:flex space-x-8">
