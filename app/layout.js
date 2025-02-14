@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* <link rel="icon" href="/public/assets/tech_talk_lkkogo.png" /> */}
+        <meta name="google-site-verification" content="wwXsr5Sc70Jz2F_MscQHBPTAXLadsUvMZXQBHYGhi9M" />
       </head>
       <body className="bg-gray-50 dark:bg-gray-900">
         <NavbarComp />
