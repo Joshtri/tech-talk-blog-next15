@@ -1,11 +1,14 @@
+// app/post/[slug]/page.jsx
 import axios from "axios";
-import PostContent from "./PostContent";
+import PostContentClient from "./PostContentClient";
 
 export async function generateMetadata({ params }) {
-  const slug = params.slug;
+  const {slug} = await params; // Remove await
 
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`);
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`
+    );
     const post = response.data.data;
 
     return {
@@ -17,7 +20,9 @@ export async function generateMetadata({ params }) {
         url: `https://tech-talks-blog.com/post/${slug}`,
         images: [
           {
-            url: post.coverImageUrl || "https://tech-talks-blog.com/assets/tech_talk_logo.png",
+            url:
+              post.coverImageUrl ||
+              "https://tech-talks-blog.com/assets/tech_talk_logo.png",
             alt: post.title,
           },
         ],
@@ -27,7 +32,10 @@ export async function generateMetadata({ params }) {
         card: "summary_large_image",
         title: `Tech Talks Blog - ${post.title}`,
         description: post.description,
-        images: [post.coverImageUrl || "https://tech-talks-blog.com/assets/tech_talk_logo.png"],
+        images: [
+          post.coverImageUrl ||
+            "https://tech-talks-blog.com/assets/tech_talk_logo.png",
+        ],
       },
     };
   } catch (error) {
@@ -40,9 +48,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ReadPost({ params }) {
-  const slug = params.slug;
-  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`);
+  const {slug} = await params; // Remove await
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/post/${slug}`
+  );
   const post = response.data.data;
 
-  return <PostContent post={post} />;
+  return <PostContentClient post={post} />;
 }

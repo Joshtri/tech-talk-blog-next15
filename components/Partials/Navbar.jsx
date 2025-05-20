@@ -8,22 +8,44 @@ import Image from "next/image";
 import techTalkLogo from "@assets/tech_talk_logo.png";
 
 function NavbarComp() {
-  const [theme, setTheme] = useState(
-    typeof window !== "undefined"
-      ? localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light")
-      : "light"
-  );
+  const [theme, setTheme] = useState("light"); // default aman
+
+  useEffect(() => {
+    const localTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    setTheme(localTheme || (prefersDark ? "dark" : "light"));
+  }, []);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const controls = useAnimation();
 
-  // Start the continuous spin animation on mount.
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
+
+  // Start the continuous spin animation on mount
   useEffect(() => {
     controls.start({
       rotate: 360,
-      transition: { repeat: Infinity, ease: "linear", duration: 10 },
+      transition: {
+        repeat: Number.POSITIVE_INFINITY,
+        ease: "linear",
+        duration: 10,
+      },
     });
   }, [controls]);
 
@@ -44,7 +66,13 @@ function NavbarComp() {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-lg"
+          : "bg-white dark:bg-gray-800 shadow-md"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
@@ -55,19 +83,29 @@ function NavbarComp() {
               onHoverEnd={() =>
                 controls.start({
                   rotate: 360,
-                  transition: { repeat: Infinity, ease: "linear", duration: 10 },
+                  transition: {
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "linear",
+                    duration: 10,
+                  },
                 })
               }
             >
               <Image
-                src={techTalkLogo}
+                src={techTalkLogo || "/placeholder.svg"}
                 alt="Tech Talk Logo"
                 width={40}
                 height={40}
                 className="mr-3"
               />
             </motion.div>
-            <span className="text-xl font-bold text-gray-800 dark:text-gray-200">
+            <span
+              className={`text-xl font-bold transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-900 dark:text-white"
+                  : "text-gray-800 dark:text-gray-200"
+              }`}
+            >
               Tech Talks Blog
             </span>
           </Link>
@@ -85,7 +123,11 @@ function NavbarComp() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-lg transition duration-300"
+                className={`hover:text-blue-600 dark:hover:text-blue-400 text-lg transition duration-300 ${
+                  scrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
               >
                 {item.name}
               </Link>
@@ -97,14 +139,24 @@ function NavbarComp() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+              className={`md:hidden focus:outline-none transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-800 dark:text-gray-200"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
+              aria-label="Toggle menu"
             >
               ☰
             </button>
 
             <button
               onClick={toggleTheme}
-              className="text-gray-700 dark:text-gray-300 focus:outline-none"
+              className={`focus:outline-none transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-800 dark:text-gray-200"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
+              aria-label="Toggle theme"
             >
               {theme === "dark" ? (
                 <FaSun className="h-6 w-6" />
@@ -117,7 +169,13 @@ function NavbarComp() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-2 space-y-2">
+          <div
+            className={`md:hidden py-3 space-y-2 ${
+              scrolled
+                ? "bg-white/90 dark:bg-gray-800/90 backdrop-blur-md"
+                : "bg-white dark:bg-gray-800"
+            }`}
+          >
             {[
               { name: "Blog", href: "/" },
               { name: "About", href: "/about" },
@@ -129,7 +187,12 @@ function NavbarComp() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-lg transition duration-300"
+                className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 text-lg transition duration-300 ${
+                  scrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-gray-700 dark:text-gray-300"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
               </Link>

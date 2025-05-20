@@ -1,18 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
-import { FaCommentDots, FaShareAlt, FaFacebook, FaTwitter, FaWhatsapp, FaCopy } from "react-icons/fa";
+import { motion } from "framer-motion";
+import {
+  FaCommentDots,
+  FaShareAlt,
+  FaFacebook,
+  FaTwitter,
+  FaWhatsapp,
+  FaCopy,
+  FaRegClock,
+} from "react-icons/fa";
 import { id } from "date-fns/locale";
 import { formatDistanceToNow } from "date-fns";
 import { Dropdown } from "flowbite-react";
+import ShareDropdown from "../common/ShareDropdown";
 
 function PostsCard({ post }) {
+  const [isHovered, setIsHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const [randomCategory, setRandomCategory] = useState(null);
+
+  useEffect(() => {
+    const categories = ["Technology", "Programming", "Web Dev", "AI", "Mobile"];
+    const picked = categories[Math.floor(Math.random() * categories.length)];
+    setRandomCategory(picked);
+  }, []);
 
   const handleButtonClick = () => {
     setIsAnimating(true);
     setTimeout(() => {
       setIsAnimating(false);
-    }, 300); // Durasi animasi dalam milidetik
+    }, 300);
   };
 
   const handleCopyLink = (url) => {
@@ -22,76 +43,92 @@ function PostsCard({ post }) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col">
-      {/* Gambar Postingan */}
-      {post.coverImageUrl && (
-        <img
-          src={post.coverImageUrl}
-          alt={post.title}
-          className="w-full h-48 object-cover"
-        />
-      )}
-      <div className="p-4 flex flex-col flex-grow">
-        {/* Judul Postingan */}
-        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2 line-clamp-2">
-          {post.title}
-        </h3>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="h-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden h-full flex flex-col border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-xl transition-all duration-300">
+        {/* Category Badge */}
+        <div className="absolute z-10 top-4 left-4">
+          {randomCategory && (
+            <span className="bg-blue-600/90 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-sm">
+              {randomCategory}
+            </span>
+          )}
+        </div>
 
-        {/* Deskripsi Postingan */}
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow line-clamp-3">
-          {post.description?.slice(0, 100)}...
-        </p>
+        {/* Image Container */}
+        <div className="relative overflow-hidden h-52">
+          {post.coverImageUrl ? (
+            <img
+              src={post.coverImageUrl || "/placeholder.svg"}
+              alt={post.title}
+              className={`w-full h-full object-cover transition-transform duration-700 ${
+                isHovered ? "scale-110" : "scale-100"
+              }`}
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+              <span className="text-white text-xl font-bold">Tech Talks</span>
+            </div>
+          )}
 
-        {/* Informasi Waktu dan Komentar */}
-        <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-          <span>
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-70"></div>
+
+          {/* Time info on image */}
+          <div className="absolute bottom-3 left-3 text-white text-xs flex items-center">
+            <FaRegClock className="mr-1" />
             {formatDistanceToNow(new Date(post.createdAt), {
               addSuffix: true,
               locale: id,
             })}
-          </span>
-          <span className="flex items-center">
-            {post.commentsCount || 0}
+          </div>
+
+          {/* Comments count on image */}
+          <div className="absolute bottom-3 right-3 text-white text-xs flex items-center">
+            <span>{post.commentsCount || 0}</span>
             <FaCommentDots className="ml-1" />
-          </span>
+          </div>
         </div>
 
-        {/* Share Button dan Link */}
-        <div className="flex items-center justify-between">
-          {/* Dropdown Share Button */}
-          <Dropdown
-            label={<FaShareAlt className="text-blue-600 dark:text-blue-400 hover:text-blue-800 cursor-pointer" />}
-            inline
-            arrowIcon={false}
-          >
-            <Dropdown.Item onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin}/post/${post.slug}`, "_blank")}>
-              <FaFacebook className="mr-2 text-blue-600" /> Bagikan ke Facebook
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.origin}/post/${post.slug}`, "_blank")}>
-              <FaTwitter className="mr-2 text-blue-400" /> Bagikan ke Twitter
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => window.open(`https://wa.me/?text=${window.location.origin}/post/${post.slug}`, "_blank")}>
-              <FaWhatsapp className="mr-2 text-green-500" /> Bagikan ke WhatsApp
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => handleCopyLink(`${window.location.origin}/post/${post.slug}`)}>
-              <FaCopy className="mr-2 text-gray-500" /> Salin Tautan
-            </Dropdown.Item>
-          </Dropdown>
+        <div className="p-5 flex flex-col flex-grow">
+          {/* Title */}
+          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link href={`/post/${post.slug}`}>{post.title}</Link>
+          </h3>
 
-          {/* Link ke postingan */}
-          <Link href={`/post/${post.slug}`}>
-            <button
-              className={`px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 transform transition-all duration-300 ${
-                isAnimating ? "animate-bounce" : ""
-              }`}
-              onClick={handleButtonClick}
-            >
-              Baca Selengkapnya
-            </button>
-          </Link>
+          {/* Description */}
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow line-clamp-3">
+            {post.description?.slice(0, 100)}...
+          </p>
+
+          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
+            {/* Share Dropdown */}
+
+            <ShareDropdown slug={post.slug} />
+
+            {/* Read More Button */}
+            <Link href={`/post/${post.slug}`}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300 ${
+                  isAnimating ? "animate-pulse" : ""
+                }`}
+                onClick={handleButtonClick}
+              >
+                Baca Selengkapnya
+              </motion.button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

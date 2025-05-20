@@ -1,17 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { MdDateRange } from "react-icons/md";
-import { FiCopy, FiHeart } from "react-icons/fi";
-import { format } from "date-fns";
-import { Flip, toast, ToastContainer } from "react-toastify";
 import Comment from "@/components/ReadPost/Comment";
 import CommentList from "@/components/ReadPost/CommentList";
-import ShareButton from "@/components/ReadPost/ShareButton";
 import Subscription from "@/components/Subscription";
-import "react-toastify/dist/ReactToastify.css";
-import "highlight.js/styles/monokai-sublime.css";
 import axios from "axios";
+import "highlight.js/styles/monokai-sublime.css";
+import { useEffect, useState } from "react";
+import { FiCopy, FiHeart } from "react-icons/fi";
+import { Flip, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PostContent({ post }) {
   const [likeCount, setLikeCount] = useState(0);
@@ -25,7 +22,9 @@ export default function PostContent({ post }) {
 
   const fetchLikeStatus = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/like/${post._id}`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/like/${post._id}`
+      );
       setLiked(response.data.liked);
       setLikeCount(response.data.likeCount);
     } catch (err) {
@@ -35,7 +34,9 @@ export default function PostContent({ post }) {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/comment/${post._id}`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/comment/${post._id}`
+      );
       setComments(response.data);
     } catch (err) {
       console.error("Error fetching comments:", err);
@@ -76,54 +77,64 @@ export default function PostContent({ post }) {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 py-8">
-      <div className="max-w-4xl w-full bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-6 sm:py-8">
+      <div className="max-w-4xl w-full bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md">
         {post.coverImageUrl && (
-          <img
-            src={post.coverImageUrl}
-            alt="Post Cover"
-            className="w-full h-64 object-cover rounded-lg"
-          />
+          <div className="w-full overflow-hidden rounded-lg mb-4">
+            <img
+              src={post.coverImageUrl || "/placeholder.svg"}
+              alt="Post Cover"
+              className="w-full h-auto sm:h-64 object-cover rounded-lg transition-transform hover:scale-105 duration-300"
+            />
+          </div>
         )}
-        <h1 className="text-3xl font-bold text-center capitalize dark:text-gray-200 mt-4">
+
+        <h1 className="text-2xl sm:text-3xl font-bold text-center capitalize dark:text-gray-200 mt-4">
           {post.title}
         </h1>
-        <p className="text-center text-gray-600 mt-2 dark:text-gray-300">
-          <MdDateRange className="inline-block mr-2" />
-          {format(new Date(post.createdAt), "MMMM dd, yyyy")}
-        </p>
+
         <div
           className="text-gray-800 dark:text-gray-300 prose text-justify w-full max-w-4xl prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-        <div className="flex justify-between mt-4 space-x-2">
+
+        <div className="flex flex-wrap justify-between mt-6 gap-2">
           <button
-            className={`px-3 py-1 rounded-md flex items-center ${
-              liked ? "bg-red-500 text-white" : "bg-gray-200 dark:bg-slate-500 hover:bg-gray-300"
+            className={`px-3 py-1.5 rounded-md flex items-center transition-colors ${
+              liked
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 dark:text-white"
             }`}
             onClick={handleLikeToggle}
           >
-            <FiHeart className="mr-2" />
-            {liked ? "Liked" : "Like"}
+            <FiHeart className={`mr-2 ${liked ? "fill-current" : ""}`} />
+            <span>{liked ? "Liked" : "Like"}</span>
+            {likeCount > 0 && <span className="ml-1">({likeCount})</span>}
           </button>
+
           <button
-            className="px-3 py-1 rounded-md dark:bg-slate-500 bg-gray-200 hover:bg-gray-300"
+            className="px-3 py-1.5 rounded-md dark:bg-slate-600 bg-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 flex items-center dark:text-white transition-colors"
             onClick={handleCopyLink}
           >
             <FiCopy className="mr-2" />
-            Copy Link
+            <span className="hidden sm:inline">Copy Link</span>
+            <span className="sm:hidden">Copy</span>
           </button>
         </div>
-        <ShareButton post={post} />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 mt-8 max-w-4xl w-full">
-        <Comment postId={post._id} onAddComment={(newComment) => setComments((prev) => [...prev, newComment])} />
+      <div className="space-y-6 mt-8 max-w-4xl w-full">
+        <Comment
+          postId={post._id}
+          onAddComment={(newComment) =>
+            setComments((prev) => [...prev, newComment])
+          }
+        />
         <CommentList comments={comments} />
-        <Subscription />
+        <div className="mt-8">
+          <Subscription />
+        </div>
       </div>
-
-      <ToastContainer />
     </div>
   );
 }

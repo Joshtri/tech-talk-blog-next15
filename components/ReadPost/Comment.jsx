@@ -1,90 +1,94 @@
-import  { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FiSend } from 'react-icons/fi';
-import { Tooltip } from 'flowbite-react'; // Import Tooltip from Flowbite
+"use client";
+
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FiSend, FiMessageCircle } from "react-icons/fi";
+import { Button, Tooltip, Spinner } from "flowbite-react";
 
 function Comment({ postId, onAddComment }) {
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleAddComment = async () => {
-    if (newComment.trim() === '') return; // Prevent empty comments
+    if (newComment.trim() === "") return; // Prevent empty comments
 
     try {
       setLoading(true);
 
       // Make the API request to add a comment
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/comment`, {
-        comment_user: newComment,
-        postId: postId,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/comment`,
+        {
+          comment_user: newComment,
+          postId: postId,
+        }
+      );
 
       // Trigger parent function to update comments list
       onAddComment(response.data);
 
       // Show success toast once
-      toast.success('Komentar berhasil terkirim', {
-        toastId: 'comment-success' // Unique ID to prevent duplicate toasts
+      toast.success("Komentar berhasil terkirim", {
+        toastId: "comment-success", // Unique ID to prevent duplicate toasts
       });
 
       // Reset comment input
-      setNewComment('');
+      setNewComment("");
     } catch (error) {
-      console.error('Error adding comment:', error);
+      console.error("Error adding comment:", error);
+      toast.error("Gagal mengirim komentar");
     } finally {
       setLoading(false); // Ensure loading state is disabled
     }
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 p-4 max-w-4xl mx-auto mt-5 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4 dark:text-gray-100">Beri Komentar</h2>
-      <div className="mb-4">
+    <div className="bg-white dark:bg-gray-800 p-6 max-w-4xl mx-auto mt-5 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+      <div className="flex items-center gap-3 mb-4">
+        <FiMessageCircle className="text-blue-500 dark:text-blue-400 text-xl" />
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+          Beri Komentar
+        </h2>
+      </div>
+
+      <div className="mb-4 relative">
         <textarea
-          className="w-full p-2 rounded-lg border border-gray-300"
+          className="w-full p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
           rows="4"
           placeholder="Type your comment here..."
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          disabled={loading} // Disable textarea when loading
+          disabled={loading}
         />
+        <div className="absolute bottom-3 right-3 text-xs text-gray-500 dark:text-gray-400">
+          {newComment.length > 0 ? `${newComment.length} karakter` : ""}
+        </div>
       </div>
-      <div className="flex justify-start">
-        <Tooltip content="Send Comment" placement="top">
-          <button
-            className={`bg-blue-500 text-white p-2 rounded-lg ${loading ? 'cursor-not-allowed' : ''}`}
+
+      <div className="flex justify-end">
+        <Tooltip content="Kirim Komentar" placement="top" style="light">
+          <Button
+            color="blue"
+            pill
             onClick={handleAddComment}
-            disabled={loading} // Disable button when loading
+            disabled={loading || newComment.trim() === ""}
+            className="px-5 py-2.5 transition-all duration-300 hover:shadow-md"
           >
             {loading ? (
-              <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                ></path>
-              </svg>
+              <div className="flex items-center gap-2">
+                <Spinner size="sm" light={true} />
+                <span>Mengirim...</span>
+              </div>
             ) : (
-              <FiSend className="h-5 w-5" />
+              <div className="flex items-center gap-2 text-gray-900 dark:text-gray-50">
+                <FiSend className="h-5 w-5" />
+                <span>Kirim</span>
+              </div>
             )}
-          </button>
+          </Button>
         </Tooltip>
-
       </div>
     </div>
   );
