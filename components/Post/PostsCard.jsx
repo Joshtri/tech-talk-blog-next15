@@ -91,7 +91,7 @@ function PostsCard({ post }) {
 
           {/* Comments count on image */}
           <div className="absolute bottom-3 right-3 text-white text-xs flex items-center">
-            <span>{post.commentsCount || post.commentCount ||  0}</span>
+            <span>{post.commentCount || 0}</span>
             <FaCommentDots className="ml-1" />
           </div>
         </div>

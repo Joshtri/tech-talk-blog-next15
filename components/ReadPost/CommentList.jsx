@@ -1,5 +1,3 @@
-import { formatDateSafe } from "@/utils/common";
-
 function CommentList({ comments }) {
   return (
     <div className="p-6 max-w-5xl mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg mt-6">
@@ -19,7 +17,9 @@ function CommentList({ comments }) {
               {comment.comment_user}
             </p>
             <p className="text-gray-400 text-sm">
-              {formatDateSafe(comment.createdAt)}
+              {comment.createdAt
+                ? new Date(comment.createdAt).toLocaleString()
+                : "Waktu tidak tersedia"}
             </p>
           </div>
         ))
@@ -30,4 +30,4 @@ function CommentList({ comments }) {
   );
 }
 
-export default CommentList;
+    export default CommentList;
