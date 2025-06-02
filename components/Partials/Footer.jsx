@@ -158,7 +158,7 @@ function FooterComp() {
             </div>
 
             {/* Categories */}
-            <div>
+            {/* <div>
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center">
                 <FaLaptopCode className="mr-2 text-blue-500" /> Categories
               </h3>
@@ -204,7 +204,7 @@ function FooterComp() {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
 
             {/* Newsletter */}
             <div>
