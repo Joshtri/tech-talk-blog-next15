@@ -8,3 +8,46 @@
 
 /* Custom global styles (jika ada) */
 
+
+
+/* Add this CSS file to your project */
+
+/* Override prose image styles */
+.prose img {
+  @apply rounded-lg shadow-md mx-auto my-4;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* Add image hover effect */
+.prose img:hover {
+  @apply shadow-lg;
+  transform: scale(1.01);
+  transition: transform 0.3s ease, shadow 0.3s ease;
+}
+
+/* Style figure elements */
+.prose figure {
+  @apply my-8 mx-auto;
+}
+
+.prose figure figcaption {
+  @apply text-center text-sm text-gray-500 mt-2;
+}
+
+/* Add responsive image container */
+.image-container {
+  @apply relative overflow-hidden rounded-lg;
+  width: 100%;
+}
+
+/* Add blur-up loading effect */
+.image-loading {
+  filter: blur(10px);
+  transition: filter 0.3s ease-out;
+}
+
+.image-loaded {
+  filter: blur(0);
+}

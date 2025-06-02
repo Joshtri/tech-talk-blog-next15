@@ -5,6 +5,7 @@ import CommentList from "@/components/ReadPost/CommentList";
 import Subscription from "@/components/Subscription";
 import axios from "axios";
 import "highlight.js/styles/monokai-sublime.css";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiCopy, FiHeart } from "react-icons/fi";
 import { Flip, toast } from "react-toastify";
@@ -80,11 +81,13 @@ export default function PostContent({ post }) {
     <div className="flex flex-col items-center min-h-screen bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-6 sm:py-8">
       <div className="max-w-4xl w-full bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-lg shadow-md">
         {post.coverImageUrl && (
-          <div className="w-full overflow-hidden rounded-lg mb-4">
-            <img
+          <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden mb-4">
+            <Image
               src={post.coverImageUrl || "/placeholder.svg"}
               alt="Post Cover"
-              className="w-full h-auto sm:h-64 object-cover rounded-lg transition-transform hover:scale-105 duration-300"
+              fill
+              loading="lazy"
+              className="object-cover transition-transform hover:scale-105 duration-300"
             />
           </div>
         )}
