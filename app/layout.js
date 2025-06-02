@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta name="google-site-verification" content="wwXsr5Sc70Jz2F_MscQHBPTAXLadsUvMZXQBHYGhi9M" />
+        {/* <meta name="google-site-verification" content="wwXsr5Sc70Jz2F_MscQHBPTAXLadsUvMZXQBHYGhi9M" /> */}
       </head>
       <body className="bg-gray-50 dark:bg-gray-900">
         <NavbarComp />
