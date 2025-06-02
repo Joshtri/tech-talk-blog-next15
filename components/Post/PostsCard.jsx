@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import { id } from "date-fns/locale";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   FaCommentDots,
-  FaShareAlt,
-  FaFacebook,
-  FaTwitter,
-  FaWhatsapp,
-  FaCopy,
-  FaRegClock,
+  FaRegClock
 } from "react-icons/fa";
-import { id } from "date-fns/locale";
-import { formatDistanceToNow } from "date-fns";
-import { Dropdown } from "flowbite-react";
 import ShareDropdown from "../common/ShareDropdown";
 
 function PostsCard({ post }) {

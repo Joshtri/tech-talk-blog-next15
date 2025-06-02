@@ -42,7 +42,7 @@ export default function MainContent({ posts = [], error = null }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filteredPosts.map((post) => (
-              <PostsCard key={post._id} post={post} />
+              <PostsCard key={post.id || post._id || post.slug} post={post} />
             ))}
           </div>
         )}
