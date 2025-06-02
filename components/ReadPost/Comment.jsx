@@ -19,7 +19,7 @@ function Comment({ postId, onAddComment }) {
 
       // Make the API request to add a comment
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/comment`,
+        `${import.meta.env.NEXT_PUBLIC_API_URL}/api/comment`,
         {
           comment_user: newComment,
           postId: postId,
@@ -37,7 +37,7 @@ function Comment({ postId, onAddComment }) {
       // Reset comment input
       setNewComment("");
     } catch (error) {
-      console.error("Error adding comment:", error);
+      // console.error("Error adding comment:", error);
       toast.error("Gagal mengirim komentar");
     } finally {
       setLoading(false); // Ensure loading state is disabled
