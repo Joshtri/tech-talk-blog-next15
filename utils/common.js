@@ -1,3 +1,6 @@
+import { toast } from 'sonner';
+
+
 export function formatDateSafe(dateString) {
   if (!dateString) return "Waktu tidak tersedia";
   const date = new Date(dateString);
@@ -7,3 +10,15 @@ export function formatDateSafe(dateString) {
     timeStyle: "short",
   });
 }
+
+
+export const copyCurrentUrlToClipboard = () => {
+  navigator.clipboard
+    .writeText(window.location.href)
+    .then(() => {
+      toast.success("Link copied to clipboard!");
+    })
+    .catch((err) => {
+      console.error("Clipboard error:", err);
+    });
+};

@@ -3,13 +3,12 @@
 import Comment from "@/components/ReadPost/Comment";
 import CommentList from "@/components/ReadPost/CommentList";
 import Subscription from "@/components/Subscription";
+import { copyCurrentUrlToClipboard } from "@/utils/common";
 import axios from "axios";
 import "highlight.js/styles/monokai-sublime.css";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiCopy, FiHeart } from "react-icons/fi";
-import { Flip, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function PostContent({ post }) {
   const [likeCount, setLikeCount] = useState(0);
@@ -17,30 +16,32 @@ export default function PostContent({ post }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetchLikeStatus();
-    fetchComments();
-  }, [post]);
+    if (post?._id) {
+      fetchLikeStatus();
+      fetchComments();
+    }
+  }, [post?._id]);
 
   const fetchLikeStatus = async () => {
     try {
-      const response = await axios.get(
+      const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/like/${post._id}`
       );
-      setLiked(response.data.liked);
-      setLikeCount(response.data.likeCount);
+      setLiked(res.data.liked);
+      setLikeCount(res.data.likeCount);
     } catch (err) {
-      console.error("Error fetching like status:", err);
+      console.error("Failed to fetch like status:", err);
     }
   };
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(
+      const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/comment/${post._id}`
       );
-      setComments(response.data);
+      setComments(res.data);
     } catch (err) {
-      console.error("Error fetching comments:", err);
+      console.error("Failed to fetch comments:", err);
     }
   };
 
@@ -50,31 +51,12 @@ export default function PostContent({ post }) {
         ? `${process.env.NEXT_PUBLIC_API_URL}/api/unlike`
         : `${process.env.NEXT_PUBLIC_API_URL}/api/like`;
 
-      const response = await axios.post(url, { postId: post._id });
-      setLikeCount(response.data.likeCount);
+      const res = await axios.post(url, { postId: post._id });
       setLiked(!liked);
-    } catch (error) {
-      console.error("Error updating like status:", error);
+      setLikeCount(res.data.likeCount);
+    } catch (err) {
+      console.error("Failed to update like status:", err);
     }
-  };
-
-  const handleCopyLink = () => {
-    const url = window.location.href;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        toast.success("🦄 Link copied to clipboard!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          pauseOnHover: true,
-          theme: "light",
-          transition: Flip,
-        });
-      })
-      .catch((err) => console.error("Failed to copy:", err));
   };
 
   return (
@@ -83,7 +65,7 @@ export default function PostContent({ post }) {
         {post.coverImageUrl && (
           <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden mb-4">
             <Image
-              src={post.coverImageUrl || "/placeholder.svg"}
+              src={post.coverImageUrl}
               alt="Post Cover"
               fill
               loading="lazy"
@@ -97,18 +79,18 @@ export default function PostContent({ post }) {
         </h1>
 
         <div
-          className="text-gray-800 dark:text-gray-300 prose text-justify w-full max-w-4xl prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert"
+          className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert text-justify text-gray-800 dark:text-gray-300 max-w-4xl w-full"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
         <div className="flex flex-wrap justify-between mt-6 gap-2">
           <button
+            onClick={handleLikeToggle}
             className={`px-3 py-1.5 rounded-md flex items-center transition-colors ${
               liked
                 ? "bg-red-500 text-white hover:bg-red-600"
                 : "bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 dark:text-white"
             }`}
-            onClick={handleLikeToggle}
           >
             <FiHeart className={`mr-2 ${liked ? "fill-current" : ""}`} />
             <span>{liked ? "Liked" : "Like"}</span>
@@ -116,8 +98,8 @@ export default function PostContent({ post }) {
           </button>
 
           <button
-            className="px-3 py-1.5 rounded-md dark:bg-slate-600 bg-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 flex items-center dark:text-white transition-colors"
-            onClick={handleCopyLink}
+            onClick={copyCurrentUrlToClipboard}
+            className="px-3 py-1.5 rounded-md bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-700 flex items-center dark:text-white transition-colors"
           >
             <FiCopy className="mr-2" />
             <span className="hidden sm:inline">Copy Link</span>

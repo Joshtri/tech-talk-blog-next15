@@ -1,6 +1,7 @@
 import "./globals.css"; // Import Tailwind
 import NavbarComp from "@/components/Partials/Navbar";
 import Footer from "@/components/Partials/Footer";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "Tech Talks Blog",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="bg-gray-50 dark:bg-gray-900">
         <NavbarComp />
+        <Toaster richColors position="top-center"/>
         <main className="pt-16">{children}</main>
         <Footer />
       </body>
