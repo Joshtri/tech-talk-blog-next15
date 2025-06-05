@@ -5,7 +5,7 @@ import Welcome from "@/components/Welcome";
 import SearchBar from "@/components/SearchBar";
 import EmptyArticleMessage from "@/components/EmptyArticleMessage";
 import PostsCard from "@/components/Post/PostsCard";
-import SocialBar from "@/components/SocialBar";
+// import SocialBar from "@/components/SocialBar";
 import SkeletonPostsCard from "@/components/Post/SkeletonPostsCard.jsx";
 
 export default function MainContent({ posts = [], error = null }) {
