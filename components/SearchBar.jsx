@@ -152,7 +152,7 @@ const SearchBar = ({ onSearch }) => {
 
           {/* Search Button */}
           <button
-            className={`relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-4 rounded-r-2xl transition duration-300 font-medium ${
+            className={`relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 sm:px-6 sm:py-4 rounded-r-2xl transition duration-300 font-medium text-sm sm:text-base ${
               isLoading ? "cursor-not-allowed" : ""
             }`}
             onClick={handleSearch}
