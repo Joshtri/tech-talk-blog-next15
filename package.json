@@ -1,6 +1,6 @@
 {
   "name": "blog-next-sample",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -12,7 +12,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
-    "flowbite": "^2.5.2",
+  "flowbite": "^2.5.2",
     "flowbite-react": "^0.10.2",
     "framer-motion": "^11.18.0",
     "gsap": "^3.13.0",

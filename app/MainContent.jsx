@@ -9,7 +9,7 @@ import SocialBar from "@/components/SocialBar";
 import SkeletonPostsCard from "@/components/Post/SkeletonPostsCard.jsx";
 
 export default function MainContent({ posts = [], error = null }) {
-  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [filteredPosts, setFilteredPosts] = useState(posts || []);
 
   const handleSearch = (searchTerm) => {
     if (!searchTerm) {
@@ -42,7 +42,7 @@ export default function MainContent({ posts = [], error = null }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filteredPosts.map((post) => (
-              <PostsCard key={post.id || post._id || post.slug} post={post} />
+              <PostsCard key={post._id || post.slug} post={post} />
             ))}
           </div>
         )}
