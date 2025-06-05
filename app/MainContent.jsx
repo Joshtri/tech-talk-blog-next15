@@ -26,7 +26,7 @@ export default function MainContent({ posts = [], error = null }) {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <SocialBar />
+      {/* <SocialBar /> */}
       <Welcome />
       <SearchBar onSearch={handleSearch} />
       <div className="mt-8">
